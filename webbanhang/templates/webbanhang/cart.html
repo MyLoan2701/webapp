@@ -1,0 +1,69 @@
+{% extends "webbanhang/base.html" %}
+{% load static %}
+{% block placeholder %}
+
+<div class="col-md-12 bor">
+ 	 <section class="box-main1">
+        <h3 class="title-main" style="text-align: center;"><a href="javascript:void(0)"> Giỏ hàng </a> </h3>
+        
+        <table class="table table-striped">
+		  <thead>
+		    <tr>
+		      <th scope="col">Stt</th>
+		      <th scope="col">Tên sản phẩm</th>
+		      <th scope="col">Hình ảnh</th>
+		      <th scope="col">Giá</th>
+		      <th scope="col">Số lượng</th>
+		      <th scope="col">Thành tiền</th>
+		      <th scope="col">Xóa</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{% if request.session.cart %}
+		  	{% for key,item in request.session.cart.items %}
+			  		<tr>
+			      	  <th scope="row">{{ item.id }}</th>
+				      <td>
+				      	{{ item.name }}
+				      </td>
+				      <td style="padding: 0">
+				      	<img src="{{ MEDIA_URL }}/{{ item.img }}" width="80px" height="80px">
+				      </td>
+				      <td>{{ item.price }} đ</td>
+				      <td style="padding-top: 20px">
+				      	<button><a onclick="changeCart({{ item.id }},-1)"><i class="fa fa-minus"></i></a></button>
+				      	<input value="{{ item.num }}">
+				      	<button><a onclick="changeCart({{ item.id }},1)"><i class="fa fa-plus"></i></a></button>
+				      </td>
+				      <td>{{ item.tt_price }} đ</td>
+				      <td style="padding-top: 22px"><a href=""><i class="fa fa-trash"></i></a></td>
+				    </tr>
+		  		{% endfor %}
+		  </tbody>
+		  <tfoot>
+		  	<tr>
+		      <th colspan="5" style="text-align: center">Tổng số tiền</th>
+		      <th scope="col" style="color: red">{{ total }} đ</th>
+		      <th scope="col"></th>
+		    </tr>
+		    <tr>
+		    	<td colspan="7">
+		    		<a href="{% url 'webbanhang:order-view' %}?next={{ request.get_full_path|urlencode }}" class="btn btn-primary">
+		    		Đặt hàng</a>
+		    		<button class="btn btn-danger" onclick="changeCart(1,-10)">Xóa hết</button>
+		    	</td>
+		    <tr>
+		   </tfoot>
+		   {% else %}
+		   	<tr>
+		    	<td colspan="7" style="color:#4caf50; text-align:center; font-size: 30px; padding: 0">
+		    		Giỏ hàng trống!!!!!!!
+		    	</td>
+		    <tr>
+		   {% endif %}
+		</table>
+       
+    </section>
+
+</div>
+{% endblock %}

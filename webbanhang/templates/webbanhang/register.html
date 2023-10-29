@@ -1,0 +1,70 @@
+{% extends "webbanhang/base.html" %}
+{% load static %}
+{% block placeholder %}
+
+ <div class="col-md-12 bor">
+ 	 <section class="box-main1">
+        <h3 class="title-main" style="text-align: center;"><a href="javascript:void(0)"> Đăng kí thành viên </a> </h3>
+
+        {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% for mes in messages %}
+                    {% if mes.tags %}
+                    {{ mes }}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        <form action="{% url 'webbanhang:register' %}" method="POST" style="margin-top: 30px">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label class="col-sm-3 text-right" style="margin-top: 10px">Tên thành viên</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="name" value="" required pattern="\S+.*" title="Tên không được để trống">
+
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 text-right" style="margin-top: 10px">Email</label>
+                <div class="col-sm-6">
+                  <input type="email" class="form-control" name="email"value="" >
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 text-right" style="margin-top: 10px">Mật khẩu</label>
+                <div class="col-sm-6">
+                  <input type="password" class="form-control" name="password" value="" required pattern="\S+.*" title="Mật khẩu không được để trống">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 text-right" style="margin-top: 10px">Số điện thoại</label>
+                <div class="col-sm-6">
+                  <input type="tel" class="form-control" name="phone" value="">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-3 text-right" style="margin-top: 10px">Địa chỉ</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="address" value="">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-6 col-sm-offset-3 container-fluid">
+                  <button type="submit" class="btn btn-success">Đăng kí</button>
+                </div>
+            </div>
+        </form>
+
+        
+       
+    </section>
+
+</div>
+
+{% endblock %}

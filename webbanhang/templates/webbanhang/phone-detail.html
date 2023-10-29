@@ -1,0 +1,147 @@
+{% extends "webbanhang/base.html" %}
+{% load static %}
+{% block placeholder %}
+<div class="col-md-12 bor">
+
+    <div class="chitietSanpham" style="min-height: 85vh">
+        <h1>
+            Điện thoại
+        	{{product.product_name}}</h1>
+        <div class="rowdetail group">
+            <div class="picture">
+                <img src="{{ MEDIA_URL }}/{{ product.product_img}}">
+            </div>
+            <div class="price_sale">
+                <div class="area_price"><strong>{{product.formatSale}}₫</strong>
+                    {% if product.product_sale > 0 %}
+                        <span>{{ product.formatPrice }}đ </span>
+                    {% endif %}
+                </div>
+                <div class="ship" style="display: none;">
+                    <i class="fa fa-clock-o"></i>
+                    <div>NHẬN HÀNG TRONG 1 GIỜ</div>
+                </div>
+                <div class="area_promo">
+                    <strong>khuyến mãi</strong>
+                    <div class="promo">
+                        <i class="fa fa-check-circle"></i>
+                        <div id="detailPromo">Cơ hội trúng <span style="font-weight: bold">61 xe Wave Alpha</span> khi trả góp Home Credit</div>
+                    </div>
+                </div>
+                <div class="policy">
+                	<!--
+                    <div>
+                        <i class="fa fa-archive"></i>
+
+                        
+                    </div>
+                -->
+                    <div>
+                        <i class="fa fa-star"></i>
+                        <p>Bảo hành chính hãng 12 tháng.</p>
+                    </div>
+                    <div class="last">
+                        <i class="fa fa-retweet"></i>
+                        <p>1 đổi 1 trong 1 tháng nếu lỗi, đổi sản phẩm tại nhà trong 1 ngày.</p>
+                    </div>
+                </div>
+                <div class="area_order">
+                    <!-- nameProduct là biến toàn cục được khởi tạo giá trị trong phanTich_URL_chiTietSanPham -->
+                    <a class="buy_now" onclick="addCart({{ product.id }},1)">
+                        <h3><i class="fa fa-plus" style="color: white"></i> Thêm vào giỏ hàng</h3>
+                    </a>
+                </div>
+            </div>
+            <div class="info_product">
+                <h2>Thông số kỹ thuật</h2>
+                    	{{ product.product_detail|safe }}
+            </div>
+        </div>
+        <hr>
+        <div class="comment-area">
+            <div class="guiBinhLuan">
+                <form action="{% url 'webbanhang:rate' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="stars">
+                        <input type="hidden" name="id" value="{{product.id}}">
+                        <input class="star star-5" id="star-5" value="5" type="radio" name="star">
+                        <label class="star star-5" for="star-5" title="Tuyệt vời"></label>
+
+                        <input class="star star-4" id="star-4" value="4" type="radio" name="star">
+                        <label class="star star-4" for="star-4" title="Tốt"></label>
+
+                        <input class="star star-3" id="star-3" value="3" type="radio" name="star">
+                        <label class="star star-3" for="star-3" title="Tạm"></label>
+
+                        <input class="star star-2" id="star-2" value="2" type="radio" name="star">
+                        <label class="star star-2" for="star-2" title="Khá"></label>
+
+                        <input class="star star-1" id="star-1" value="1" type="radio" name="star">
+                        <label class="star star-1" for="star-1" title="Tệ"></label>
+                    </div>
+                        <input type="textarea" maxlength="250" id="inpBinhLuan" name="comment" placeholder="Viết suy nghĩ của bạn vào đây...">
+                    <input id="btnBinhLuan" type="submit" value="GỬI BÌNH LUẬN">
+                </form>
+            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success" role="alert">
+                        {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <!--
+            <?php if(isset($_SESSION['success'])) :?>
+                    <div class="alert alert-success" role="alert">
+                        <?php echo $_SESSION['success'];unset($_SESSION['success']); ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if(isset($_SESSION['error_cm'])) :?>
+                    <div class="alert alert-danger" role="alert">
+                        <?php echo $_SESSION['error_cm'];unset($_SESSION['error_cm']); ?>
+                    </div>
+                <?php endif; ?>   
+            -->
+
+            <div class="rating">
+                <i class="fa fa-star{% if product.product_rate < 1 %}-o{%endif%}"></i>
+                <i class="fa fa-star{% if product.product_rate < 2 %}-o{%endif%}"></i>
+                <i class="fa fa-star{% if product.product_rate < 3 %}-o{%endif%}"></i>
+                <i class="fa fa-star{% if product.product_rate < 4 %}-o{%endif%}"></i>
+                <i class="fa fa-star{% if product.product_rate < 5 %}-o{%endif%}"></i>
+                <span> {{product.product_cmt}} đánh giá </span>
+            </div>
+            
+            <div class="comment-content">
+                {% for item in rate %}
+
+                    <div class="comment">
+                    <i class="fa fa-user-circle"> </i>
+                    <h4>{{item.customer.name}}
+                    <span>
+                        <i class="fa fa-star{% if item.rated < 1 %}-o{%endif%}"></i>
+                        <i class="fa fa-star{% if item.rated < 2 %}-o{%endif%}"></i>
+                        <i class="fa fa-star{% if item.rated < 3 %}-o{%endif%}"></i>
+                        <i class="fa fa-star{% if item.rated < 4 %}-o{%endif%}"></i>
+                        <i class="fa fa-star{% if item.rated < 5 %}-o{%endif%}"></i>
+                    </span>
+                    </h4>
+                    <p>{{item.comment}}</p>
+                    <span class="time">{{item.date_create}}</span>
+                </div>
+                    
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

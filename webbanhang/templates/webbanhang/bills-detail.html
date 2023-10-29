@@ -1,0 +1,60 @@
+
+{% extends "webbanhang/base.html" %}
+{% load static %}
+{% block placeholder %}
+
+
+ <div class="col-md-12 bor">
+ 	 <section class="box-main1">
+        <h3 class="title-main" style="text-align: center;"><a href="javascript:void(0)"> Chi tiết đơn hàng </a> </h3>
+
+        <table class="table table-striped">
+		  <thead>
+		    <tr>
+		      
+		      <th scope="col">Tên sản phẩm</th>
+		      <th scope="col">Hình ảnh</th>
+		      <th scope="col">Giá</th>
+		      <th scope="col">Số lượng</th>
+		      <th scope="col">Thành tiền</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{% if detail %}
+		  		{% for item in detail %}
+			  		<tr>
+			      	 
+				      <td>{{ item.product.product_name }}</td>
+				      <td style="padding: 0">
+				      	<img src="{{ MEDIA_URL }}/{{ item.product.product_img}}" width="80px" height="80px">
+				      </td>
+				      <td> {{ item.price }} đ</td>
+				      <td>
+				      	{{ item.qty }}
+				      </td>
+				      <td>{{ item.price }} đ</td>
+				    </tr>
+		  		{% endfor %}
+		  </tbody>
+		  <tfoot>
+		  	<tr>
+		      <th colspan="4" style="text-align: center">Tổng số tiền</th>
+		      <th scope="col" style="color: red">{{ total }} đ</th>
+		    </tr>
+		   </tfoot>
+		   {% else %}
+		   	<tr>
+		    	<td colspan="7" style="color:#4caf50; text-align:center; font-size: 30px; padding: 0">
+		    		Không có sản phẩm!!!!!!!
+		    	</td>
+		    <tr>
+		   {% endif %}
+		</table>
+        
+       
+    </section>
+
+</div>
+
+
+{% endblock %}

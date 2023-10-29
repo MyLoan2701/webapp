@@ -1,0 +1,72 @@
+{% extends "webbanhang/base.html" %}
+{% load static %}
+{% block placeholder %}
+ <div class="col-md-12 bor">
+ 	 <section class="box-main1 clearfix">
+        <h3 class="title-main" style="text-align: center;"><a href="javascript:void(0)"> 
+          {{category.category_name}} </a> </h3>
+        
+        <div class="showitem">
+
+          {% for item in list_product %}
+             <div class="col-md-2dot4 item-product bor">
+                <a href="{% url 'webbanhang:phone-detail' item.id %}">
+                    <img src="{{ MEDIA_URL }}/{{ item.product_img}}" class="" width="100%" height="270">
+                </a>
+                <div class="info-item">
+                    <a href="{% url 'webbanhang:phone-detail' item.id %}">{{item.product_name}}</a>
+                    <p>
+                      {% if item.product_sale > 0 %}
+                        <strike class="sale">{{item.formatSale}} đ</strike>
+                      {% endif %}
+                      
+                      <b class="price">{{item.formatPrice}} đ</b>
+                    </p>
+
+                    <div class="ratingresult">
+                        <i class="fa fa-star{% if item.product_rate < 1 %}-o{%endif%}"></i>
+                        <i class="fa fa-star{% if item.product_rate < 2 %}-o{%endif%}"></i>
+                        <i class="fa fa-star{% if item.product_rate < 3 %}-o{%endif%}"></i>
+                        <i class="fa fa-star{% if item.product_rate < 4 %}-o{%endif%}"></i>
+                        <i class="fa fa-star{% if item.product_rate < 5 %}-o{%endif%}"></i>
+                        <span> {{ item.product_cmt }} đánh giá </span>
+                    </div>
+
+                </div>
+                <div class="hidenitem">
+                    <p><a href=""><i class="fa fa-search"></i></a></p>
+                    <p><a href=""><i class="fa fa-heart"></i></a></p>
+                    <p><a onclick="addCart({{ item.id }},1)"><i class="fa fa-shopping-basket"></i></a></p>
+                </div>
+            </div> 
+          {% endfor %}
+        </div>
+    </section>
+
+    <nav aria-label="Page navigation" style="text-align: center">
+        <ul class="pagination pullright">
+          {% if list_product.has_previous %}
+          <li class="page-item">
+          <a class ="page-link" href="{{request.path}}?page={{list_product.previous_page_number}}">Trang trước</a>
+          </li>
+          {% endif %}
+          {% for i in list_product.paginator.page_range %}
+          
+          <li class="page-item
+          {% if list_product.number == i %}
+          active 
+          {% endif %}
+          ">
+              <a class ="page-link" href="{{request.path}}?page={{ i }}">{{ i }}</a>
+          </li>
+          {% endfor %}
+          {% if list_product.has_next %}
+          <li class="page-item">
+          <a class ="page-link" href="{{request.path}}?page={{list_product.next_page_number}}">Trang sau</a>
+          </li>
+          {% endif %}
+        </ul>
+    </nav>
+</div>
+
+{% endblock %}
